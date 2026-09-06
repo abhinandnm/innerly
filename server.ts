@@ -1,7 +1,6 @@
 import express from "express";
 import path from "path";
 import fs from "fs";
-import { createServer as createViteServer } from "vite";
 import { verifyFirebaseToken, AuthenticatedRequest } from "./server/auth.js";
 import { rateLimiter, getUserRateLimitStats } from "./server/rateLimiter.js";
 import { validateChatPayload, validatePastSelfPayload } from "./server/validation.js";
@@ -222,6 +221,7 @@ async function startServer() {
 
   // Vite middleware for development or static serving for production
   if (process.env.NODE_ENV !== "production") {
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",

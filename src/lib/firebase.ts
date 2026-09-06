@@ -1,18 +1,19 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInAnonymously,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signOut,
+} from "firebase/auth";
 import { getFirestore, doc, getDocFromServer } from "firebase/firestore";
 import firebaseConfig from "../../firebase-applet-config.json";
 import { UserProfile } from "../types";
 
-// Configure same-origin authDomain in browser if possible, fallback to config
-const appConfig = {
-  ...firebaseConfig,
-  authDomain: typeof window !== "undefined" && window.location.host
-    ? window.location.host
-    : firebaseConfig.authDomain,
-};
-
-const app = initializeApp(appConfig);
+const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 
@@ -80,6 +81,21 @@ export async function signInWithGoogle(): Promise<void> {
   await signInWithPopup(auth, provider);
 }
 
+export async function signInWithEmail(email: string, pass: string): Promise<void> {
+  await signInWithEmailAndPassword(auth, email.trim(), pass);
+}
+
+export async function signUpWithEmail(email: string, pass: string, displayName?: string): Promise<void> {
+  const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), pass);
+  if (displayName?.trim() && userCredential.user) {
+    await updateProfile(userCredential.user, { displayName: displayName.trim() });
+  }
+}
+
+export async function signInGuest(): Promise<void> {
+  await signInAnonymously(auth);
+}
+
 export async function logoutUser(): Promise<void> {
   clearLocalSession();
   try {
@@ -93,4 +109,3 @@ export async function logoutUser(): Promise<void> {
     window.dispatchEvent(new CustomEvent("innerly:logout"));
   }
 }
-

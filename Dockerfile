@@ -1,13 +1,13 @@
-# Multi-stage build for Google Cloud Run
-FROM node:22-alpine AS builder
+# Multi-stage build for Google Cloud Run using Debian slim for glibc native binary compatibility
+FROM node:22-slim AS builder
 
 WORKDIR /app
 
 # Copy dependency definitions
-COPY package*.json ./
+COPY package.json ./
 
-# Install all dependencies (works with or without package-lock.json)
-RUN npm install
+# Install all dependencies cleanly
+RUN npm install --legacy-peer-deps
 
 # Copy source code
 COPY . .
@@ -16,17 +16,17 @@ COPY . .
 RUN npm run build
 
 # Runner stage
-FROM node:22-alpine AS runner
+FROM node:22-slim AS runner
 
 WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# Copy dependency definitions and install production-only dependencies
-COPY package*.json ./
-RUN npm install --omit=dev
+# Copy package.json
+COPY package.json ./
 
-# Copy compiled frontend and backend assets from builder stage
+# Copy pre-installed node_modules and compiled dist directly from builder
+COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 
 # Document port binding

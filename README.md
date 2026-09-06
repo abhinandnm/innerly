@@ -1,14 +1,24 @@
 # Innerly — Production-Grade Personal Gemini Journal
 
 > **Google AI Studio Ideathon Challenge Submission**  
-> An authenticated, zero-trust AI life companion and reflective journal built with **Google Gemini**, **Firebase Auth**, **Cloud Firestore**, and **Google Cloud Secret Manager**.
+> An authenticated, zero-trust AI life companion and reflective journal built with **Google Gemini**, **Firebase Auth**, **Cloud Firestore**, and **Google Cloud Run**.
 
+[![Live App](https://img.shields.io/badge/Live%20App-Cloud%20Run-brightgreen?logo=google-cloud&logoColor=white)](https://innerly-477860044065.us-central1.run.app/)
+[![Article](https://img.shields.io/badge/Medium-Article-black?logo=medium&logoColor=white)](https://medium.com/@abhinandnm327/innerly-evolving-the-personal-journal-with-generative-ai-google-cloud-0cc39c109ebf)
+[![GitHub](https://img.shields.io/badge/Repository-GitHub-181717?logo=github&logoColor=white)](https://github.com/abhinandnm/innerly)
 [![Google AI Studio](https://img.shields.io/badge/Built%20With-Google%20AI%20Studio-4285F4?logo=google&logoColor=white)](https://ai.studio)
 [![Gemini API](https://img.shields.io/badge/Model-Gemini%20Flash-blueviolet?logo=google-gemini)](https://ai.google.dev/)
 [![Firebase](https://img.shields.io/badge/Auth%20%26%20Database-Firebase%20%2F%20Firestore-FFA611?logo=firebase&logoColor=white)](https://firebase.google.com/)
 [![Cloud Run](https://img.shields.io/badge/Deploy-Google%20Cloud%20Run-4285F4?logo=google-cloud&logoColor=white)](https://cloud.google.com/run)
-[![TypeScript](https://img.shields.io/badge/Language-TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+---
+
+## 🌐 Live Production Links
+
+* **🚀 Live Deployed App (Cloud Run):** [https://innerly-477860044065.us-central1.run.app/](https://innerly-477860044065.us-central1.run.app/)
+* **📝 Medium Case Study & Demo Post:** [Innerly: Evolving the Personal Journal with Generative AI & Google Cloud (#AccelerateAIwithCloudRun)](https://medium.com/@abhinandnm327/innerly-evolving-the-personal-journal-with-generative-ai-google-cloud-0cc39c109ebf)
+* **💻 GitHub Source Repository:** [https://github.com/abhinandnm/innerly](https://github.com/abhinandnm/innerly)
 
 ---
 
@@ -119,8 +129,8 @@ Defined in [`GEMINI.md`](GEMINI.md) and [`AGENTS.md`](AGENTS.md):
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/innerly-secure-gemini-journal.git
-   cd innerly-secure-gemini-journal
+   git clone https://github.com/abhinandnm/innerly.git
+   cd innerly
    ```
 
 2. **Install dependencies:**

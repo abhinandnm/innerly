@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import { Request, Response, NextFunction } from "express";
+import firebaseConfig from "../firebase-applet-config.json";
 
 export interface AuthenticatedRequest extends Request {
   user?: {
@@ -10,11 +11,21 @@ export interface AuthenticatedRequest extends Request {
   };
 }
 
-const FIREBASE_PROJECT_ID =
-  process.env.VITE_FIREBASE_PROJECT_ID ||
+const PRIMARY_FIREBASE_PROJECT_ID =
   process.env.FIREBASE_PROJECT_ID ||
-  process.env.GCP_PROJECT_ID ||
+  process.env.VITE_FIREBASE_PROJECT_ID ||
+  firebaseConfig.projectId ||
   "gen-lang-client-0229761603";
+
+const ALLOWED_PROJECT_IDS = Array.from(
+  new Set([
+    PRIMARY_FIREBASE_PROJECT_ID,
+    firebaseConfig.projectId,
+    process.env.GCP_PROJECT_ID,
+    process.env.GOOGLE_CLOUD_PROJECT,
+    "gen-lang-client-0229761603",
+  ].filter(Boolean) as string[])
+);
 const CERT_URL = "https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com";
 
 let cachedPublicKeys: Record<string, string> = {};
@@ -121,19 +132,19 @@ export async function verifyFirebaseToken(
       return;
     }
 
-    const expectedIssuer = `https://securetoken.google.com/${FIREBASE_PROJECT_ID}`;
-    if (payload.iss !== expectedIssuer) {
+    const expectedIssuers = ALLOWED_PROJECT_IDS.map((id) => `https://securetoken.google.com/${id}`);
+    if (!expectedIssuers.includes(payload.iss)) {
       res.status(401).json({
         error: "INVALID_ISSUER",
-        message: "Token was not issued by the configured Firebase Project.",
+        message: `Token was not issued by an authorized Firebase Project. Expected issuer in [${expectedIssuers.join(", ")}].`,
       });
       return;
     }
 
-    if (payload.aud !== FIREBASE_PROJECT_ID) {
+    if (!ALLOWED_PROJECT_IDS.includes(payload.aud)) {
       res.status(401).json({
         error: "INVALID_AUDIENCE",
-        message: "Token audience does not match the configured Firebase Project ID.",
+        message: `Token audience '${payload.aud}' does not match authorized Firebase Projects [${ALLOWED_PROJECT_IDS.join(", ")}].`,
       });
       return;
     }
