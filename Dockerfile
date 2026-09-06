@@ -6,8 +6,8 @@ WORKDIR /app
 # Copy dependency definitions
 COPY package*.json ./
 
-# Install all dependencies (including devDependencies needed for build)
-RUN npm ci
+# Install all dependencies (works with or without package-lock.json)
+RUN npm install
 
 # Copy source code
 COPY . .
@@ -24,7 +24,7 @@ ENV PORT=3000
 
 # Copy dependency definitions and install production-only dependencies
 COPY package*.json ./
-RUN npm ci --omit=dev
+RUN npm install --omit=dev
 
 # Copy compiled frontend and backend assets from builder stage
 COPY --from=builder /app/dist ./dist

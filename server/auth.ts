@@ -10,7 +10,11 @@ export interface AuthenticatedRequest extends Request {
   };
 }
 
-const FIREBASE_PROJECT_ID = "gen-lang-client-0229761603";
+const FIREBASE_PROJECT_ID =
+  process.env.VITE_FIREBASE_PROJECT_ID ||
+  process.env.FIREBASE_PROJECT_ID ||
+  process.env.GCP_PROJECT_ID ||
+  "gen-lang-client-0229761603";
 const CERT_URL = "https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com";
 
 let cachedPublicKeys: Record<string, string> = {};

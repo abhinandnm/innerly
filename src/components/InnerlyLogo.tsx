@@ -56,7 +56,7 @@ export const InnerlyBrand: React.FC<InnerlyBrandProps> = ({
         </span>
         {showSubtitle && (
           <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
-            Personal LifeGraph
+            Personal AI Journal
           </span>
         )}
       </div>
