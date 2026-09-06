@@ -1,0 +1,6 @@
+{
+  "name": "Innerly",
+  "description": "Innerly: A privacy-first personal AI second brain that turns your journal into an evolving graph of goals, projects, challenges, decisions, and progress.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

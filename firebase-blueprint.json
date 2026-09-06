@@ -1,0 +1,133 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile document",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Chat": {
+      "title": "Chat",
+      "description": "User journal conversation topic",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 100 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "ownerId", "title"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Message in a journal conversation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "model"] },
+        "content": { "type": "string", "maxLength": 4000 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "ownerId", "role", "content"]
+    },
+    "Memory": {
+      "title": "Memory",
+      "description": "Structured personal knowledge entity extracted from journal entries",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "type": {
+          "type": "string",
+          "enum": ["goal", "project", "idea", "challenge", "decision", "action", "progress", "theme"]
+        },
+        "title": { "type": "string", "maxLength": 200 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "status": {
+          "type": "string",
+          "enum": ["active", "delayed", "completed", "abandoned", "recurring"]
+        },
+        "sourceChatId": { "type": "string" },
+        "sourceMessageIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "relatedEntityIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "ownerId", "type", "title"]
+    },
+    "Insight": {
+      "title": "Insight",
+      "description": "Synthesized longitudinal pattern with evidence citations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "category": { "type": "string" },
+        "title": { "type": "string" },
+        "summary": { "type": "string" },
+        "evidence": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "occurrenceCount": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "ownerId", "category", "title", "summary"]
+    },
+    "TimelineEvent": {
+      "title": "TimelineEvent",
+      "description": "Chronological milestone or journal event",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "sourceChatId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "ownerId", "title", "category"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile"
+    },
+    "/users/{userId}/chats/{chatId}": {
+      "schema": "Chat",
+      "description": "User journal conversations"
+    },
+    "/users/{userId}/chats/{chatId}/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Messages inside a user journal conversation"
+    },
+    "/users/{userId}/memories/{memoryId}": {
+      "schema": "Memory",
+      "description": "User extracted knowledge entities for LifeGraph"
+    },
+    "/users/{userId}/insights/{insightId}": {
+      "schema": "Insight",
+      "description": "User longitudinal insights"
+    },
+    "/users/{userId}/timeline/{eventId}": {
+      "schema": "TimelineEvent",
+      "description": "User chronological timeline events"
+    }
+  }
+}
